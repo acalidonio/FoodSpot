@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.AutoMirrored.Filled
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardColors
@@ -53,6 +55,7 @@ import com.pdm0126.foodspot.model.Dish
 fun DetailScreen(
     restaurantId: Int,
     onNavigateBack: () -> Unit,
+    onNavigateToCart: () -> Unit,
     viewModel: DetailViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -70,6 +73,11 @@ fun DetailScreen(
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(imageVector = Filled.ArrowBack, contentDescription = "Volver")
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onNavigateToCart) {
+                        Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = "Carrito")
                     }
                 }
             )
@@ -118,6 +126,7 @@ fun DetailScreen(
                     DishCard(
                         dish
                     ) {
+                        viewModel.addToCart(dish)
                         Toast.makeText(
                             context,
                             "${dish.name} agregado al carrito",
@@ -168,12 +177,23 @@ fun DishCard(dish: Dish, onAddToCart: () -> Unit) {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                Button(
-                    onClick = onAddToCart,
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    Text("+ Agregar")
+                Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    Button(
+                        onClick = onAddToCart,
+                        shape = RoundedCornerShape(8.dp)
+                    ) {
+                        Text("+ Agregar")
+                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Text(
+                        text = "$${"%.2f".format(dish.price)}",
+                        style = typography.titleMedium,
+                        fontWeight = FontWeight.Bold
+                    )
                 }
+
             }
         }
     }
