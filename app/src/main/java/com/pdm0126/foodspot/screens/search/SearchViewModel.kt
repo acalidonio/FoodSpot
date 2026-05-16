@@ -15,6 +15,10 @@ class SearchViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState.asStateFlow()
 
+    init {
+        onQueryChanged("")
+    }
+
     fun onQueryChanged(newQuery: String) {
         viewModelScope.launch {
             val searchResults = if (newQuery.isBlank() || newQuery.isEmpty())  {
