@@ -5,15 +5,15 @@ import com.pdm0126.foodspot.repository.RestaurantRepository
 import com.pdm0126.foodspot.repository.dummy.sampleRestaurants
 
 class RestaurantRepositoryImpl : RestaurantRepository {
-    override fun getRestaurants(): List<Restaurant> {
+    override suspend fun getRestaurants(): List<Restaurant> {
         return sampleRestaurants
     }
 
-    override fun getRestaurantById(id: Int): Restaurant? {
+    override suspend fun getRestaurantById(id: Int): Restaurant? {
         return sampleRestaurants.find { it.id == id }
     }
 
-    override fun searchRestaurants(query: String): List<Restaurant> {
+    override suspend fun searchRestaurants(query: String): List<Restaurant> {
         if (query.isBlank()) return emptyList()
 
         return sampleRestaurants.filter { restaurant ->
