@@ -14,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +44,7 @@ import com.pdm0126.foodspot.model.Restaurant
 fun HomeScreen(
     onNavigateToDetail: (Int) -> Unit,
     onNavigateToSearch: () -> Unit,
+    onNavigateToCart: () -> Unit,
     viewModel: HomeViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -59,6 +61,9 @@ fun HomeScreen(
                 actions = {
                     IconButton(onNavigateToSearch) {
                         Icon(imageVector = Icons.Default.Search, contentDescription = "Buscar")
+                    }
+                    IconButton(onNavigateToCart) {
+                        Icon(imageVector = Icons.Default.ShoppingCart, contentDescription = "Carrito")
                     }
                 }
             )
@@ -126,13 +131,6 @@ fun RestaurantCard(restaurant: Restaurant, onClick: () -> Unit) {
                     textAlign = TextAlign.Center,
                     maxLines = 2
                 )
-                // TODO futuro sistema de rating
-                /*Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = restaurant.rating.toString() + " ⭐",
-                    style = typography.labelSmall,
-                    textAlign = TextAlign.Center
-                )*/
             }
         }
     }
