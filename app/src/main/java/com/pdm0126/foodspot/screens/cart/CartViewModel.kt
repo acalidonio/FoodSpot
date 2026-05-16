@@ -34,4 +34,19 @@ class CartViewModel : ViewModel() {
         val itemTotal = cartItems.value[index].dish.price * cartItems.value[index].quantity
         return "$${"%.2f".format(itemTotal)}"
     }
+
+    fun updateQuantity(dishId: Int, increase: Boolean) {
+        val currentItems = cartItems.value
+        val item = currentItems.find { it.dish.id == dishId }
+
+        item?.let {
+            val newQuantity = if (increase) it.quantity + 1 else it.quantity - 1
+
+            if (newQuantity <= 0) {
+                CartRepository.removeDish(dishId)
+            } else {
+                CartRepository.updateQuantity(it.dish.id, newQuantity)
+            }
+        }
+    }
 }

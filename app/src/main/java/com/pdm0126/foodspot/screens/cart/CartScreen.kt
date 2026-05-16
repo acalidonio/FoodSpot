@@ -131,6 +131,8 @@ fun CartScreen(
                     CartItemRow(
                         item = item,
                         priceLabel = viewModel.getPriceForQuantity(index),
+                        onIncrease = { viewModel.updateQuantity(item.dish.id, true) },
+                        onDecrease = { viewModel.updateQuantity(item.dish.id, false) },
                         onRemove = { viewModel.removeItem(item.dish.id) }
                     )
                 }
@@ -143,6 +145,8 @@ fun CartScreen(
 fun CartItemRow(
     item: CartItem,
     priceLabel: String,
+    onIncrease: () -> Unit,
+    onDecrease: () -> Unit,
     onRemove: () -> Unit
 ) {
     Card(
@@ -160,12 +164,12 @@ fun CartItemRow(
                 model = item.dish.imageUrl,
                 contentDescription = item.dish.name,
                 modifier = Modifier
-                    .size(100.dp)
+                    .size(80.dp)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
             Column(modifier = Modifier.weight(1f)) {
                 Text(
@@ -179,15 +183,42 @@ fun CartItemRow(
                     color = colorScheme.secondary
                 )
                 Text(
-                    text = "Cantidad: ${item.quantity}",
-                    style = typography.bodyMedium
-                )
-                Text(
                     text = priceLabel,
-                    style = typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
+                    style = typography.bodyLarge,
+                    color = colorScheme.primary,
+                    fontWeight = FontWeight.SemiBold
                 )
 
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(top = 8.dp)
+                ) {
+                    FilledIconButton(
+                        onClick = onDecrease,
+                        modifier = Modifier.size(32.dp),
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = colorScheme.surfaceVariant
+                        )
+                    ) {
+                        Text("-", fontWeight = FontWeight.Bold)
+                    }
+
+                    Text(
+                        text = "${item.quantity}",
+                        modifier = Modifier.padding(horizontal = 12.dp),
+                        style = typography.titleMedium
+                    )
+
+                    FilledIconButton(
+                        onClick = onIncrease,
+                        modifier = Modifier.size(32.dp),
+                        colors = IconButtonDefaults.filledIconButtonColors(
+                            containerColor = colorScheme.surfaceVariant
+                        )
+                    ) {
+                        Text("+", fontWeight = FontWeight.Bold)
+                    }
+                }
             }
             IconButton(onClick = onRemove) {
                 Icon(

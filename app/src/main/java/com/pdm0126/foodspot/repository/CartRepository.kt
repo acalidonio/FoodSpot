@@ -33,4 +33,13 @@ object CartRepository {
     fun clearCart() {
         _cartItems.value = emptyList()
     }
+
+    fun updateQuantity(dishId: Int, newQuantity: Int) {
+        _cartItems.update { currentItems ->
+            currentItems.map {
+                if (it.dish.id == dishId) it.copy(quantity = newQuantity) else it
+            }
+        }
+    }
+
 }
