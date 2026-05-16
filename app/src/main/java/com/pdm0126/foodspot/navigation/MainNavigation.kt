@@ -6,6 +6,10 @@ import androidx.navigation3.ui.NavDisplay
 import com.pdm0126.foodspot.screens.detail.DetailScreen
 import com.pdm0126.foodspot.screens.home.HomeScreen
 import com.pdm0126.foodspot.screens.search.SearchScreen
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.navigation3.runtime.entryProvider
 
 @Composable
@@ -40,6 +44,33 @@ fun MainNavigation() {
                     }
                 )
             }
+        },
+        transitionSpec = {
+            slideInHorizontally(
+                initialOffsetX = { it },
+                animationSpec = tween(500)
+            ) togetherWith slideOutHorizontally(
+                targetOffsetX = { -it },
+                animationSpec = tween(500)
+            )
+        },
+        popTransitionSpec = {
+            slideInHorizontally(
+                initialOffsetX = { -it },
+                animationSpec = tween(500)
+            ) togetherWith slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = tween(500)
+            )
+        },
+        predictivePopTransitionSpec = {
+            slideInHorizontally(
+                initialOffsetX = { -it },
+                animationSpec = tween(250)
+            ) togetherWith slideOutHorizontally(
+                targetOffsetX = { it },
+                animationSpec = tween(250)
+            )
         }
     )
 }
