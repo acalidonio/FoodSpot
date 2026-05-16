@@ -29,4 +29,9 @@ class CartViewModel : ViewModel() {
         }
         return "$${"%.2f".format(total)}"
     }
+
+    fun getPriceForQuantity(index: Int): String {
+        val itemTotal = cartItems.value[index].dish.price * cartItems.value[index].quantity
+        return "$${"%.2f".format(itemTotal)}"
+    }
 }

@@ -2,7 +2,7 @@ package com.pdm0126.foodspot.screens.cart
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.AutoMirrored.Filled
@@ -127,9 +127,10 @@ fun CartScreen(
                 contentPadding = PaddingValues(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                items(cartItems) { item ->
+                itemsIndexed(cartItems) { index, item ->
                     CartItemRow(
                         item = item,
+                        priceLabel = viewModel.getPriceForQuantity(index),
                         onRemove = { viewModel.removeItem(item.dish.id) }
                     )
                 }
@@ -139,7 +140,11 @@ fun CartScreen(
 }
 
 @Composable
-fun CartItemRow(item: CartItem, onRemove: () -> Unit) {
+fun CartItemRow(
+    item: CartItem,
+    priceLabel: String,
+    onRemove: () -> Unit
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = cardElevation(defaultElevation = 4.dp)
@@ -178,7 +183,7 @@ fun CartItemRow(item: CartItem, onRemove: () -> Unit) {
                     style = typography.bodyMedium
                 )
                 Text(
-                    text = "$${"%.2f".format(item.dish.price * item.quantity)}",
+                    text = priceLabel,
                     style = typography.bodyMedium,
                     fontWeight = FontWeight.Bold
                 )
