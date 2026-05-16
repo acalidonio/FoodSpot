@@ -6,6 +6,7 @@ import androidx.navigation3.ui.NavDisplay
 import com.pdm0126.foodspot.screens.detail.DetailScreen
 import com.pdm0126.foodspot.screens.home.HomeScreen
 import com.pdm0126.foodspot.screens.search.SearchScreen
+import com.pdm0126.foodspot.screens.cart.CartScreen
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -27,13 +28,17 @@ fun MainNavigation() {
                     },
                     onNavigateToSearch = {
                         backStack.add(Routes.Search)
+                    },
+                    onNavigateToCart = {
+                        backStack.add(Routes.Cart)
                     }
                 )
             }
             entry<Routes.Detail> { key ->
                 DetailScreen(
                     restaurantId = key.restaurantId,
-                    onNavigateBack = { backStack.removeLastOrNull() }
+                    onNavigateBack = { backStack.removeLastOrNull() },
+                    onNavigateToCart = { backStack.add(Routes.Cart) }
                 )
             }
             entry<Routes.Search> {
@@ -42,6 +47,11 @@ fun MainNavigation() {
                     onNavigateToDetail = { restaurantId ->
                         backStack.add(Routes.Detail(restaurantId))
                     }
+                )
+            }
+            entry<Routes.Cart> {
+                CartScreen(
+                    onNavigateBack = { backStack.removeLastOrNull() }
                 )
             }
         },
